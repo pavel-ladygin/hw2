@@ -17,8 +17,7 @@ class AdminAccessor(BaseAccessor):
         # TODO: создать админа по данным в config.yml здесь
         self.app = app
         # Извлечение данных из конфига и хеширование пароля
-        config_path = os.path.abspath("path/to/config.yml")
-        with open("/Users/ladyginpavel/PycharmProjects/hw2/tests/config.yml", "r") as f:
+        with open("config.yml", "r") as f:
             config_ = yaml.safe_load(f)
         admin_email = config_["admin"]["email"]
         admin_password = config_["admin"]["password"].encode("utf-8")
