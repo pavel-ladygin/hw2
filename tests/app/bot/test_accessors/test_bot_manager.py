@@ -2,11 +2,11 @@ from unittest.mock import AsyncMock
 
 from app.store import Store
 from app.store.vk_api.dataclasses import (
-    Message,
     Update,
-    UpdateMessage,
-    UpdateObject,
+    UpdateObject, Message, UpdateMessage,
 )
+
+
 
 
 class TestHandleUpdates:

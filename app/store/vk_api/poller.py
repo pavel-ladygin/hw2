@@ -1,44 +1,37 @@
 import asyncio
 from asyncio import Task
+from typing import Optional
 
 from app.store import Store
 from app.store.bot.manager import BotManager
 
 
 class Poller:
-    def __init__(self, store: Store) -> None:
-        self.session = None
+    def __init__(self, store: Store):
         self.store = store
         self.is_running = False
-        self._poll_task: Task | None = None
-        self._stop_event = asyncio.Event()
+        self.poll_task: Optional[Task] = None
 
 
-    async def start(self) -> None:
-        # TODO: добавить asyncio Task на запуск poll
-        """Запускает поллинг в фоновом режиме"""
-        if self.is_running:
-            return
+    async def start(self):
         self.is_running = True
-        self._poll_task = asyncio.create_task(self._poll_loop())
+        self.poll_task = asyncio.create_task(self.poll())
 
-    async def _poll_loop(self):
-        """Основной цикл опроса"""
-        while self.is_running:
-            updates = await VkApiAccessor.poll(self=VkApiAccessor)
-            if updates:
-                await BotManager.handle_updates(updates, self=BotManager)
-
-    async def stop(self) -> None:
-        # TODO: gracefully завершить Poller
-        if not self.is_running:
-            return
+    async def stop(self):
+        self.is_running = False
+        if self.poll_task:
+            await self.poll_task
 
         self.is_running = False
         if self._poll_task:
             await self._poll_task
 
-    async def poll(self) -> None:
-        updates = await VkApiAccessor.poll(self=VkApiAccessor)
-        if updates:
-            await BotManager.handle_updates(updates, self=BotManager)
+    async def poll(self):
+        while self.is_running:
+            try:
+                updates = await self.store.vk_api.poll()
+                if updates:
+                    await self.store.bots_manager.handle_updates(updates)
+            except Exception as e:
+                print(f"Poll error: {e}")
+                await sleep(1)

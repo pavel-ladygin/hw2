@@ -29,9 +29,10 @@ class AdminAccessor(BaseAccessor):
         # Проверяем, что админ еще не создан и создаем
         cur_admin = await admin_accessor.get_by_email(email=admin_email, self=app)
         if not cur_admin:
-            admin_ = Admin(id=1, email=admin_email, password=str(hash_passwd))
-            database.Database.admins.append(admin_)
-            print("Connect to database")
+                    database.Database.admins.clear()
+                    admin_ = Admin(id=1, email=admin_email, password=str(hash_passwd))
+                    database.Database.admins.append(admin_)
+        print("Connect to database")
 
     async def get_by_email(self, email: str) -> Admin | None:
         data = database.Database.admins
@@ -47,6 +48,6 @@ class AdminAccessor(BaseAccessor):
         encoded_passwd = password.encode("utf-8")
         hash_passwd = bcrypt.hashpw(encoded_passwd, bcrypt.gensalt())
 
-        admin = Admin(id=len(database.Database.admins), email=email, password=str(hash_passwd))
+        admin = Admin(id=len(database.Database.admins)-1, email=email, password=str(hash_passwd))
         database.Database.admins.append(admin)
         return admin
