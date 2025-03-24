@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 # Базовые структуры, для выполнения задания их достаточно,
@@ -23,5 +24,14 @@ class UpdateObject:
 
 @dataclass
 class Update:
-    type: str
-    object: UpdateObject
+    # Поддерживаем оба варианта
+    user_id: int = None
+    text: str = None
+    type: str = None
+    object: dict = None
+
+    def __post_init__(self):
+        if self.object and not self.user_id:
+            # Извлекаем данные из сложной структуры
+            self.user_id = self.object.get("message", {}).get("from_id")
+            self.text = self.object.get("message", {}).get("text")

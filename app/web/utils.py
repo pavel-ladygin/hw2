@@ -20,4 +20,9 @@ def error_json_response(
     message: str | None = None,
     data: dict | None = None,
 ):
-    raise NotImplementedError
+    response_data = {
+        "status": status,
+        "message": message,
+        "data": data or {},
+    }
+    return json_response(response_data, status=http_status, )

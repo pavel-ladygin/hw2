@@ -6,12 +6,15 @@ class Theme:
     id: int | None
     title: str
 
+@dataclass
+class Answer:
+    title: str
+    is_correct: bool
 
 @dataclass
 class Question:
-    pass
+    id : int
+    title: str
+    theme_id : int
+    answers: list[Answer]
 
-
-@dataclass
-class Answer:
-    pass
