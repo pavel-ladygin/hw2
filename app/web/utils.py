@@ -13,7 +13,6 @@ def json_response(data: dict | None = None, status: str = "ok") -> Response:
         }
     )
 
-
 def error_json_response(
     http_status: int,
     status: str = "error",
