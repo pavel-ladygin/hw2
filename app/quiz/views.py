@@ -9,23 +9,18 @@ from app.store.quiz.accessor import QuizAccessor
 from app.store.database import database
 from tests.conftest import application
 
-# TODO: добавить проверку авторизации для этого View
 class ThemeAddView(View):
-    # TODO: добавить валидацию с помощью aiohttp-apispec и marshmallow-схем
     async def post(self):
         data = await self.request.json()
         title = data["title"]
-        # TODO: заменить на self.data["title"] после внедрения валидации
         for theme in database.Database.themes:
             if theme.title == title:
                 raise ThemeTitleError("Title is already exist")
-        # TODO: проверять, что не существует темы с таким же именем, отдавать 409 если существует
         theme = await QuizAccessor.create_theme(self=QuizAccessor, title=data["title"])
         return json_response(data={
             "id" : theme.id,
             "title" : theme.title
         })
-
 
 class ThemeListView(View):
     async def get(self):
@@ -50,21 +45,21 @@ class QuestionAddView(View):
         if cnt_ans > 1:
             raise QestionError("More than one answer")
         if cnt_ans == 0:
-            raise QestionError("no one right answer")
+            raise QestionError("No right answer")
         if len(data["answers"]) <= 1:
-            raise QestionError("only one answer")
+            raise QestionError("Only one answer")
         flag_1 = True
         for cur in database.Database.themes:
             if data["theme_id"] == cur.id:
                 flag_1 = False
         if flag_1:
-            raise NoValueError("no theme with this id")
+            raise NoValueError("No theme with this id")
         flag_2 = False
         for cur in database.Database.questions:
             if data["title"] == cur.title:
                 flag_2 = True
         if flag_2:
-            raise ThemeTitleError("its no unical question")
+            raise ThemeTitleError("Тo unique question")
         question_ = await QuizAccessor.create_question(self=QuizAccessor, theme_id=data["theme_id"], title=data["title"], answers=data["answers"])
         return json_response(status="ok", data={
             "id" : question_.id,
