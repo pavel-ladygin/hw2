@@ -1,7 +1,5 @@
-import app.store.database.database
 from app.base.base_accessor import BaseAccessor
 from app.quiz.models import Answer, Question, Theme
-from app.web.app import Application
 from app.store.database import database
 
 

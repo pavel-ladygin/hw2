@@ -1,7 +1,6 @@
 import typing
 
 from app.store.admin.accessor import AdminAccessor
-from app.store.bot.manager import BotManager
 from app.store.vk_api.accessor import VkApiAccessor
 
 if typing.TYPE_CHECKING:

@@ -7,10 +7,7 @@ from aiohttp.web_middlewares import middleware
 from aiohttp.web_response import json_response
 from aiohttp_apispec import validation_middleware
 from aiohttp_session import setup, session_middleware, get_session
-from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from cryptography import fernet
-from marshmallow import missing
-from yaml import KeyToken
 
 from app.web.utils import error_json_response
 

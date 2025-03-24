@@ -1,6 +1,4 @@
-from dataclasses import dataclass, field
-
-from app.quiz.models import Theme
+from dataclasses import dataclass
 
 
 @dataclass

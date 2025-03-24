@@ -7,8 +7,6 @@ from app.admin.models import Admin
 from app.base.base_accessor import BaseAccessor
 from app.store.database import database
 from app.web.middlewares import InvalidDataError
-from tests.conftest import config
-from app.web import config
 if typing.TYPE_CHECKING:
     from app.web.app import Application
 
